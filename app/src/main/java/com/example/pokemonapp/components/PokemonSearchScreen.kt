@@ -1,17 +1,15 @@
 package com.example.pokemonapp.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.pokemonapp.Models.PokemonViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,7 +20,7 @@ fun PokemonSearchScreen(pokemonViewModel: PokemonViewModel = viewModel()) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Pokémon Lookup") })
+            TopAppBar(title = { Text("Pokémon") })
         }
     ) { innerPadding ->
         Column(
@@ -38,10 +36,6 @@ fun PokemonSearchScreen(pokemonViewModel: PokemonViewModel = viewModel()) {
                 onValueChange = { searchQuery = it },
                 label = { Text("Enter Pokémon Name") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = {
-                    pokemonViewModel.fetchPokemon(searchQuery)  // Use searchQuery directly
-                })
             )
 
             Button(onClick = { pokemonViewModel.fetchPokemon(searchQuery) }) {
@@ -55,14 +49,14 @@ fun PokemonSearchScreen(pokemonViewModel: PokemonViewModel = viewModel()) {
             pokemon?.let {
                 Spacer(modifier = Modifier.height(16.dp))
                 AsyncImage(
-                    model = it.sprites.front_default,
+                    model = it.sprites.frontDefault,
                     contentDescription = "${it.name} sprite",
                     modifier = Modifier.size(128.dp)
                 )
-                Text("Name: ${it.name.capitalize()}")
+                Text("Name: ${it.name.capitalize(Locale.ROOT)}")
                 Text("Height: ${it.height}")
                 Text("Weight: ${it.weight}")
-                Text("Type: ${it.types.joinToString { type -> type.type.name.capitalize() }}")
+                Text("Type: ${it.types.joinToString { type -> type.type.name.capitalize(Locale.ROOT) }}")
             }
         }
     }

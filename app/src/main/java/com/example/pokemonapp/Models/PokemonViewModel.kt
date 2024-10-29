@@ -17,12 +17,13 @@ class PokemonViewModel : ViewModel() {
     fun fetchPokemon(name: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitInstance.api.getPokemon(name)
+                val response = RetrofitInstance.api.fetchPokemon(name)
                 _pokemon.value = response
-                _error.value = null // Clear any previous error
+                _error.value = null
             } catch (e: Exception) {
                 _error.value = "Failed to fetch Pokémon: ${e.message}"
             }
         }
     }
 }
+
