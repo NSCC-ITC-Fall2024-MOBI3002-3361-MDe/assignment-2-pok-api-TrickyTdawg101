@@ -6,20 +6,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-// Retrofit API interface
-interface PokemonApi {
-    @GET("{name}")
-    suspend fun fetchPokemon(@Path("name") name: String): Pokemon
+interface PokemonService {
+    @GET("pokemon/{name}")
+    suspend fun getPokemon(@Path("name") name: String): Pokemon
 }
 
-// Singleton object for Retrofit instance
 object RetrofitInstance {
-
-    val api: PokemonApi by lazy {
+    val api: PokemonService by lazy {
         Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/api/v2/pokemon/")
+            .baseUrl("https://pokeapi.co/api/v2/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(PokemonApi::class.java)
+            .create(PokemonService::class.java)
     }
 }
